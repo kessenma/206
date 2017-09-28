@@ -1,64 +1,42 @@
 import os
-import filecmp
-import csv
+import filecamp
 import operator
+import csv
 
 def getData(file):
-#Input: file name
-#Ouput: return a list of dictionary objects where
-#the keys will come from the first row in the data.
-
-#Note: The column headings will not change from the
-#test cases below, but the the data itself will
-#change (contents and size) in the different test
-#cases.
-
-	#Your code here:
 	lst = list ()
 
-	with open(file) as csvfile:
-#Read in file as csv file - Knowing that headers are keys in my dictionary
-		reader = csv.DictReader(csvfile)
-#csv = "comma separated value"
+	with open(file, 'r' as f:
+		reader = csv.DictReader(f)
 		for row in reader:
-#
 			d = dict(row)
 			lst.append(d)
-	print(lst)
-
 	return lst
 
-#Sort based on key/column
 def mySort(data,col):
-#Input: list of dictionaries
-#Output: Return a string of the form firstName lastName
+
 	x = sorted(data,key = operator.itemgetter(col))
+	person = x[0]
 	return(x[0]["First"] +" " +x[0]["Last"])
 
+def ClassSizes(data):
+	d = {}
+	for cl in data:
+		d[cl["class"]] = d.get(cl["class"],0) +1
+	class_list = d.items()
+	return sorted(class_list, key = lambda tup:tup[1],reverse = True)
 
-	#Your code here:
-
-
-#Create a histogram
-def classSizes(data):
-# Input: list of dictionaries
-# Output: Return a list of tuples ordered by
-# ClassName and Class size, e.g
-# [('Senior', 26), ('Junior', 25), ('Freshman', 21), ('Sophomore', 18)]
-
-	#Your code here:
-	pass
-
-
-
+'''
 # Find the most common day of the year to be born
 def findDay(a):
-# Input: list of dictionaries
-# Output: Return the day of month (1-31) that is the
-# most often seen in the DOB
+	d = {}
+	for day in a:
+		d[int(day["DOB"].split("/")[1])] = d.get(int(day["DOB"].split("/")[1])),0) +1
+		lst = list(d.items())
+		lst_1 = sorted(lst, key = lambda x: x[1], reverse = True)
+		return int(lst_1[0][0])
 
-	#Your code here:
-	pass
+'''
 
 
 # Find the average age (rounded) of the Students
@@ -78,8 +56,6 @@ def mySortPrint(a,col,fileName):
 
 	#Your code here:
 	pass
-
-
 
 ################################################################
 ## DO NOT MODIFY ANY CODE BELOW THIS

@@ -1,12 +1,15 @@
 import os
-import filecamp
-import operator
+import filecmp
+from operator import itemgetter
+from datetime import datetime
+from datetime import date
+
 import csv
 
-def getData(file):
-	lst = list ()
 
-	with open(file, 'r' as f:
+def getData(file):
+	lst =[]
+	with open(file, 'r') as f:
 		reader = csv.DictReader(f)
 		for row in reader:
 			d = dict(row)
@@ -14,48 +17,63 @@ def getData(file):
 	return lst
 
 def mySort(data,col):
+	 x = sorted(data,key= itemgetter(col))
+	 person = x[0]
+	 return(person["First"] + " " +person["Last"])
 
-	x = sorted(data,key = operator.itemgetter(col))
-	person = x[0]
-	return(x[0]["First"] +" " +x[0]["Last"])
 
-def ClassSizes(data):
+def classSizes(data):
 	d = {}
 	for cl in data:
-		d[cl["class"]] = d.get(cl["class"],0) +1
+		d[cl['Class']]= d.get(cl['Class'],0) + 1
 	class_list = d.items()
-	return sorted(class_list, key = lambda tup:tup[1],reverse = True)
+	return sorted(class_list, key = lambda tup: tup[1], reverse = True)
 
-'''
-# Find the most common day of the year to be born
 def findDay(a):
 	d = {}
+	#check tuples slides - slide 13
 	for day in a:
-		d[int(day["DOB"].split("/")[1])] = d.get(int(day["DOB"].split("/")[1])),0) +1
-		lst = list(d.items())
-		lst_1 = sorted(lst, key = lambda x: x[1], reverse = True)
-		return int(lst_1[0][0])
-
-'''
+		d[int(day["DOB"].split("/")[1])] = d.get(int(day["DOB"].split("/")[1]), 0) + 1
 
 
-# Find the average age (rounded) of the Students
+
+	lst = list(d.items())
+	lst_1 = sorted(lst, key = lambda x: x[1], reverse = True)
+	return int(lst_1[0][0])
+
 def findAge(a):
-# Input: list of dictionaries
-# Output: Return the day of month (1-31) that is the
-# most often seen in the DOB
+	lst = []
+	for d in a:
+		date = d["DOB"]
+		today = datetime.today()
+		born = datetime.strptime(date,'%m/%d/%Y')
+		lst.append(today.year - born.year - ((today.month, today.day) < (born.month, born.day)))
+	print (sum(lst)/len(lst))
 
-	#Your code here:
-	pass
 
-#Similar to mySort, but instead of returning single
-#Student, all of the sorted data is saved to a csv file.
 def mySortPrint(a,col,fileName):
-#Input: list of dictionaries, key to sort by and output file name
-#Output: None
+	x = sorted(a,key= itemgetter(col))
+	f = open(fileName, 'w')
+	person = x[0]
+	for person in x:
+		f.write(person["First"] + "," +person["Last"] + "," +person["Email"] +"\n")
+	f.close()
 
-	#Your code here:
-	pass
+	#c = Counter
+	#loop through data
+	# for d in data:
+	# with get avoid errors - always be clean data and it will loop through
+	#d.get(K,o)+1  a counter is similar
+	# c[]+=1
+	# data is a huge list in dictionary a single list of multiple dictionaries - F, L, Class, DOB, Email
+	# we are counting the class - senior 2, junior 1 - data structure is not attached
+	#c [d['class']] += 1
+	#c = Counter
+	#for d in data:
+	#	c[d['class']] += 1
+	#print c
+
+
 
 ################################################################
 ## DO NOT MODIFY ANY CODE BELOW THIS
